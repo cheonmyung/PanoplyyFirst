@@ -1,0 +1,42 @@
+{% extends "base/company_basic.html" %}
+{% load staticfiles %}
+
+
+
+{% block content %}
+
+<div class='row'>
+
+<div class='col-sm-8'>
+
+<h3>{{ profile.user }}</h3>
+
+{% if profile.picture %}
+<img src='{{ profile.picture.url }}' width='200px' height='200px' class='img-responsive'/>
+{% else %}
+
+<img src='{% static "img/profile_default.png" %}' class='img-responsive' />
+
+{% endif %}
+
+<hr>
+
+
+<h3>What {{ profile.user }} does?</h3>
+<p class='lead'>
+	{% if profile.overview %}
+	{{ profile.overview }}
+	{% endif %}
+</p>
+</div>
+
+
+
+<div class='col-sm-4'>
+<a type="button" href="{% url 'profile_edit' %}" class="btn btn-default">Edit Profile</a>
+</div>
+
+</div>
+
+
+{% endblock %}

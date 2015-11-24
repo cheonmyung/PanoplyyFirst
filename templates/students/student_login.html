@@ -1,0 +1,28 @@
+{% extends "base/basic.html" %}
+{% load crispy_forms_tags %}
+
+
+{% block title %}Log In - Panoplyy {% endblock %}
+
+{% block content %}
+
+<div class="text-center">
+<h2>Log In and Try a Project!</h2>
+</div>
+
+<div class="col-sm-4 col-sm-offset-4">
+
+
+<br>
+
+<form method='POST' action='{{ action_value }}'>{% csrf_token %}
+{{ login_form|crispy }}
+
+<input class='btn btn-default' type='submit' value='{{ submit_btn_value }}'/>
+</form>
+
+</div>
+
+
+
+{% endblock %}

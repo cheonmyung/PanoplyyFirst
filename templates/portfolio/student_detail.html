@@ -1,0 +1,105 @@
+{% extends "base/basic.html" %}
+{% load staticfiles %}
+
+{% block title %}Let's try! | {% endblock %}
+
+
+{% block head_styles %}
+h2 {
+	color:green;
+}
+
+h3 {
+	color:blue;
+}
+
+{% endblock %}
+
+
+{% block content %}
+
+<!-- Page Content -->
+<div class="container">
+
+
+	<!-- Page Header -->
+	<div class="row">
+			<div class='col-sm-1'>
+			{% if object.user_company.profile.picture %}
+				<img src='{{ object.user_company.profile.picture.url }}' width='50px' height='30px' class='img-responsive' />
+			{% else %}
+				<img src='{% static "img/profile_default.png" %}' width='50px' height='30px' class='img-responsive' />
+			{% endif %}
+			</div>
+			<div class='col-sm-11 text-center'>
+				<h2>{{ object.project_title }}</h2>
+			</div>
+		
+				
+	</div>
+
+	<hr>
+
+	<div class="row">
+		<span class="pull-left">
+			{% if object.job_type == 'Internship' %}
+			<p><a class="btn btn-info" role="button">{{ object.job_type }}</a></p>
+			{% else %}
+			<p><a class="btn btn-warning" role="button">{{ object.job_type }}</a></p>
+			{% endif %}
+
+			<!--<a type="button" href="#" class="btn btn-default">Company's logo</a>-->
+		</span>
+
+
+	</div>
+
+
+	<!-- Description, Image, and Position Summary -->
+	<div class="row">
+		<h4><b>About Company:</b></h4><br/>
+			<p>{{ object.company_overview }}</p>
+		<br/>
+		
+	<!-- Image 
+		{% if object.picture %}
+		<img src='{{ object.picture.url }}' width='200px' height='200px' class='img-responsive' />
+		{% else %}
+		{% endif %}
+	-->
+		<h4><b>Position Summary:</b></h4><br/>
+			<p>{{ object.position_summary }}</p>
+		<br/>
+		
+
+		<h4><b>Salary/What We Offer:</b></h4><br/>
+			<p>{{ object.salary_or_what_we_offer }}</p>
+		
+
+	</div>
+
+	<hr>
+
+	<!-- Deliverables and Submission -->
+	<div class="row">
+		<h4><b>Deliverables:</b></h4><br/>
+			<p>{{ object.deliverables }}</p>
+		<br/>
+		
+		{% if object.comments %}
+		<h4><b>Comments:</b></h4><br/>
+			<p>{{ object.comments }}</p>
+		{% endif %}
+		<br/>
+
+		<h4><b>Submissions:</b></h4><br/>
+			<p>{{ object.how_to_submit }}</p>
+		
+
+	</div>
+
+
+
+
+</div>
+{% endblock %}

@@ -1,0 +1,293 @@
+models.py
+
+
+
+class ProjectManager
+	def all(self):
+		return super(ProjectManager, self).filter(active=True)
+
+
+	def get_actived_projects(self):
+		return super(ProjectManager, self).\
+		filter(featured=True).\
+		filter(expire_date__gt=datetime.datetime.now()
+
+
+class Project
+
+
+views.py
+
+def all_deals(self):
+all_post = Deal.objects.all()
+
+
+
+
+For start_date and end_date
+
+
+from datetime import datetime, timedelta
+
+
+class ProjectManager
+	filter(active=True)
+
+class Project
+	start_date =  models.DateTimeField(default=datetime.now())
+	end_date = models.DateTimeField(default=datetime.now()+timedelta(days=30))
+	active
+
+
+def post_save_project(sender, instance, created, ~,~):
+	if created:
+		instance.start_date = datetime.today
+		instance.active = True
+		instance.save()
+	if instance.end_date >= datetime.today
+		instance.active = True
+		instance.save()
+	elif instance.end_date < datetime.today
+		instance.active = False
+		instance.save()
+	else:
+		pass
+
+
+post_save.connect(post_save_project, sender=Project)
+
+
+
+
+
+
+
+
+--  Post_save --
+
+
+def new_user_receiver(sender, instance, created, *args, **kwargs):
+	if created:
+		new_profile, is_created = UserProfile.objects.get_or_create(user=instance)
+		#print new_profile, is_created
+		notify.send(instance, 
+					recipient=MyUser.objects.get(username='jmitchel3'), #admin user
+					verb='New user created.')
+		# merchant account customer id -- stripe vs braintree
+	try:
+		merchant_obj = UserMerchantId.objects.get(user=instance)
+	except:
+		new_customer_result = braintree.Customer.create({
+				"email": instance.email
+			})
+		if new_customer_result.is_success:
+			merchant_obj, created = UserMerchantId.objects.get_or_create(user=instance)
+			merchant_obj.customer_id = new_customer_result.customer.id
+			merchant_obj.save()
+			print """Customer created with id = {0}""".format(new_customer_result.customer.id)
+		else:
+			print "Error: {0}".format(new_customer_result.message)
+			messages.error(request, "There was an error with your account. Please contact us.")
+
+		
+		# send email for verifying user email
+
+post_save.connect(new_user_receiver, sender=MyUser)
+
+
+
+
+
+def product_post_saved_receiver(sender, instance, created, *args, **kwargs):
+	product = instance
+	variations = product.variation_set.all()
+	if variations.count() == 0:
+		new_var = Variation()
+		new_var.product = product
+		new_var.title = "Default"
+		new_var.price = product.price
+		new_var.save()
+
+
+
+def user_matches_update_receiver(sender, user, *args, **kwargs):
+	updated = Match.objects.update_for_user(user)
+	update_top_suggestions = PositionMatch.objects.update_top_suggestions(user, 20)
+
+
+user_matches_update.connect(user_matches_update_receiver)
+
+
+
+
+
+
+def post_save_user_job(sender, instance, created, *args, **kwargs):
+	job = instance.position.lower()
+	location = instance.location.lower()
+	employer_name = instance.employer_name.lower()
+	#Job.objects.get(text__iexact=job)
+	new_job = Job.objects.get_or_create(text=job) #case insenstive Cashier or cashier
+	new_location, created = Location.objects.get_or_create(name=location)
+	new_employer = Employer.objects.get_or_create(location=new_location, name=employer_name)
+
+
+
+
+post_save.connect(post_save_user_job, sender=UserJob)
+
+
+
+
+
+
+
+ # How it works
+
+ <div class='steps-wrapper'>
+<div class='container'>
+<div class='steps'>
+<div class='steps-title'>Here's <span>How it Works:</span></div>
+<ul>
+<li>
+<div class='step-icon'>
+<div class='icon1'></div>
+</div>
+<div class='step-details'>
+<div class='step-title'>
+Create An Account
+</div>
+<div class='step-description'>
+It only takes 30 seconds to sign up for an account with a name and email address. Click the &quot;Get Started&quot; button at the top of the page.
+</div>
+</div>
+</li>
+<li>
+<div class='step-icon'>
+<div class='icon2'></div>
+</div>
+<div class='step-details'>
+<div class='step-title'>
+Initiate The Arbitration Process
+</div>
+<div class='step-description'>
+Click the &quot;Resolve a Dispute&quot; button on the 'dashboard' in your account. Explain what the dispute is about, how it came to be, and your proposed resolution to the dispute for the arbitrator to consider.
+</div>
+</div>
+</li>
+<li>
+<div class='step-icon'>
+<div class='icon3'></div>
+</div>
+<div class='step-details'>
+<div class='step-title'>
+Upload The Evidence
+</div>
+<div class='step-description'>
+Upload relevant evidentiary documents and photos that will convince the arbitrator that your claim should be awarded as proposed.
+</div>
+</div>
+</li>
+<li>
+<div class='step-icon'>
+<div class='icon4'></div>
+</div>
+<div class='step-details'>
+<div class='step-title'>
+Sign An Agreement Online
+</div>
+<div class='step-description'>
+Both Parties sign a simple agreement online to submit the dispute to an arbitrator on eQuibbly.
+</div>
+</div>
+</li>
+<li>
+<div class='step-icon'>
+<div class='icon5'></div>
+</div>
+<div class='step-details'>
+<div class='step-title'>
+Provide The Respondent's Information
+</div>
+<div class='step-description'>
+Provide the Respondent's contact information. eQuibbly will send the Respondent a request via an automated email to enter a response and propose a resolution.
+</div>
+</div>
+</li>
+<li>
+<div class='step-icon'>
+<div class='icon6'></div>
+</div>
+<div class='step-details'>
+<div class='step-title'>
+Indicate You Are Ready For The Arbitrator
+</div>
+<div class='step-description'>
+Each Party indicates they have finished uploading their evidence, and are ready for the arbitrator, by clicking on the &quot;I have uploaded all evidence for this dispute&quot; button on their 'dashboard'.
+</div>
+</div>
+</li>
+<li>
+<div class='step-icon'>
+<div class='icon7'></div>
+</div>
+<div class='step-details'>
+<div class='step-title'>
+Pay For The Arbitration
+</div>
+<div class='step-description'>
+Depending on the cost arrangement agreed to, one or both of the Parties pays the initial fee to eQuibbly via our online payment system. The Party or Parties who pay the fee can claim the cost in their proposed resolution.
+</div>
+</div>
+</li>
+<li>
+<div class='step-icon'>
+<div class='icon8'></div>
+</div>
+<div class='step-details'>
+<div class='step-title'>
+An Arbitrator Is Assigned To The Dispute
+</div>
+<div class='step-description'>
+The Parties may agree on an arbitrator in advance, or eQuibbly can select an arbitrator from its roster. eQuibbly will assign an appropriate arbitrator to the dispute based on the expertise required.
+</div>
+</div>
+</li>
+<li>
+<div class='step-icon'>
+<div class='icon9'></div>
+</div>
+<div class='step-details'>
+<div class='step-title'>
+Arbitrator Holds The Hearing
+</div>
+<div class='step-description'>
+In the private virtual room assigned for your arbitration, a secure communication system is used to respond to the arbitrator's questions in real-time or asynchronously. If the arbitrator deems it necessary, all Parties will participate in a telephone or video conference.
+</div>
+</div>
+</li>
+<li>
+<div class='step-icon'>
+<div class='icon10'></div>
+</div>
+<div class='step-details'>
+<div class='step-title'>
+Arbitrator Resolves The Dispute
+</div>
+<div class='step-description'>
+Within a matter of weeks the arbitrator will issue a decision and provide the Parties with a signed Award in writing that specifies the legally binding and enforceable resolution to the dispute. The Parties will be notified by email when the Award is ready to be downloaded.
+</div>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+
+
+
+
+
+

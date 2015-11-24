@@ -1,0 +1,122 @@
+{% extends "base/basic.html" %}
+{% load staticfiles %}
+
+
+{% block head_styles %}
+<!--
+h2 {
+	color:green;
+}
+
+h3 {
+	color:blue;
+}
+-->
+{% endblock %}
+
+{% block title %}Let's try Projects - Panoplyy {% endblock %}
+
+
+{% block content %}
+
+<!-- Page Content -->
+<div class="container">
+
+
+	<!-- Page Header -->
+	<div class="row">
+
+		<div class='col-sm-1'>
+			{% if project.user_company.profile.picture %}
+				<img src='{{ project.user_company.profile.picture.url }}' width='50px' height='30px' class='img-responsive' />
+			{% else %}
+				<img src='{% static "img/profile_default.png" %}' width='50px' height='30px' class='img-responsive' />
+			{% endif %}
+		</div>
+		<div class='col-sm-11 text-center'>
+			<h2>{{ project.project_title }}</h2>
+		</div>
+
+	</div>
+
+	<hr>
+
+
+	<div class="row">
+
+		<span class="pull-left">		
+			{% if project.job_type == 'Internship' %}
+			<p><a class="btn btn-info" role="button">{{ project.job_type }}</a></p>
+			{% else %}
+			<p><a class="btn btn-warning" role="button">{{ project.job_type }}</a></p>
+			{% endif %}
+		</span>
+
+		<!-- Count of Total of Users for each Project -->
+		<span>
+		</span>
+
+		{% if not user.is_authenticated %}
+		<span class="pull-right">
+			<a type="button" href="{% url 'student_register' %}" class="btn btn-default">Try</a>
+		</span>
+		{% elif user.is_authenticated and user.user_type == 'Student' %}
+		<span class="pull-right">
+			<a type="button" href="{{ project.like_link }}" class="btn btn-default">{% if do_i_like %}Trying...{% else %}Try{% endif %}</a>
+		</span>
+		{% else %}
+		<!--
+		<span class="pull-right">
+			<a type="button" href="#" class="btn btn-default">Try</a>
+		</span>-->
+		{% endif %}
+
+	</div>
+
+
+	<!-- Description, Image, and Position Summary -->
+	<div class="row">
+		<h4><b>About Company:</b></h4><br/>
+			<p>{{ project.company_overview }}</p>
+		<br/>
+		<!-- Image 
+		{% if object.picture %}
+		<img src='{{ object.picture.url }}' width='200px' height='200px' class='img-responsive' />
+		{% else %}
+		{% endif %}
+	-->
+		<h4><b>Position Summary:</b></h4><br/>
+			<p>{{ project.position_summary }}</p>
+		<br/>
+		
+		<h4><b>Salary/What We Offer:</b></h4><br/>
+			<p>{{ project.salary_or_what_we_offer }}</p>
+		
+
+	</div>
+
+	<hr>
+
+	<!-- Deliverables and Submission -->
+	<div class="row">
+		<h4><b>Deliverables:</b></h4><br/>
+			<p>{{ project.deliverables }}</p>
+		<br/>
+		
+		{% if project.comments %}
+		<h4><b>Comments:</b></h4><br/>
+			<p>{{ project.comments }}</p>
+		{% endif %}
+		<br/>
+
+		<h4><b>Submissions:</b></h4><br/>
+			<p>{{ project.how_to_submit }}</p>
+		
+
+	</div>
+
+
+
+
+</div>
+{% endblock %}

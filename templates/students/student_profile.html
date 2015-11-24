@@ -1,0 +1,204 @@
+{% extends "base/basic.html" %}
+{% load staticfiles %}
+
+
+
+{% block content %}
+
+	<!--
+	{% block title %}Profile | Student{% endblock %}
+
+	
+	{% if title %}{{ title|upper }}{% endif %}
+	-->
+
+<!-- Page Content -->
+<div class="container">
+
+	<div class='row'>
+
+		<div class='col-sm-8'>
+
+
+			<div class='col-sm-2'>
+			{% if profile.picture %}
+			<img src='{{ profile.picture.url }}' width='100px' height='100px' class='img-responsive'/>
+			{% else %}
+			<img src='{% static "img/profile_default.png" %}' width='100px' height='100px' class='img-responsive' />
+			{% endif %}
+			</div>
+
+			<div class='col-sm-1'>
+			<h3>{{ profile.user }}</h3>
+			<br>
+			{% if profile.user.school %}
+			<h4>{{ profile.user.school }}</h4>
+			{% endif %}
+			</div>
+
+			<span class="pull-right">
+			<a type="button" href="{% url 'profile_edit' %}" class="btn btn-default">Edit Profile</a>
+			</span>
+
+
+		</div>
+
+		<div class='col-sm-4'>
+		</div>
+
+
+	</div>
+	<!-- profile picture and Edit Profile -->
+
+	<hr>
+
+
+
+	<!-- Student's information about what they do -->
+	<div class='row'>
+
+		<div class='col-sm-8'>
+
+
+			<h3>About {{ profile.user }} . . .</h3>
+
+			<br>
+
+			<p class='lead'>
+				{% if profile.overview %}
+				{{ profile.overview }}
+				{% endif %}
+			</p>
+
+		</div>
+
+		<div class='col-sm-4'>
+		</div>
+
+	</div>
+
+	<hr>
+
+	<!-- Student's projects that they have tried -->
+	<div class='row'>
+
+		<!--
+		{{ item }}
+	-->
+
+		<!--
+		{% for item in items %}
+		<div class='col-sm-4'>
+				<div class="thumbnail">
+                    <img src="http://placehold.it/320x150" alt="">
+                    <div class="caption">
+                        <p class="pull-right">{{ item.user_company }}</p>
+                        <small>{{ item.projectlike.liked_projects.project_title }}</small> 
+                        <small>{{ item }}</small>                
+
+                    	<br>
+                        <br>
+                        <br>
+                        <p class="pull-right">{{ item.end_date|timeuntil }} left</p>
+                        <p>
+                            <span class="pull-left">{{ item.job_type }}</span>
+                        </p>
+                    </div>
+                </div>
+        </div>
+		{% endfor %}
+	-->
+		{% for item in items %}
+            <div class="col-sm-4 col-lg-4 col-md-4">
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+
+                    		<span>
+                                {% if item.user_company.profile.picture %}
+                                <img src='{{ item.user_company.profile.picture.url }}' width='30px' height='30px' class='img-responsive' />
+                                {% else %}
+                                <img src='{% static "img/profile_default.png" %}' width='30px' height='30px' class='img-responsive' />
+                                {% endif %}
+                            </span>
+
+
+                            <span class="text-center">
+                                <h4>{{ item.position_name }}</h4>
+                            </span>
+                                                        
+                    </div>
+
+                    <div class="panel-body">
+                    	
+                    	<p><a href="{% url 'student_detail' username=request.user slug=item.slug %}">{{ item.project_title }}</a></p>
+                    
+                        <br>
+                        {% if item.job_type == 'Internship' %}
+                        <p><a class="btn btn-info" role="button">{{ item.job_type }}</a> <a href="#" class="btn btn-default" role="button">{{ item.date_end|timeuntil }} left</a></p>
+                        {% else %}
+                        <p><a class="btn btn-warning" role="button">{{ item.job_type }}</a> <a href="#" class="btn btn-default" role="button">{{ item.date_end|timeuntil }} left</a></p>
+                        {% endif %}
+
+
+                    </div>
+
+                </div>
+            </div>
+        {% endfor %}
+        
+
+
+	</div>
+	<!-- /.row -->
+
+
+		
+
+
+
+
+
+
+
+
+		<!--  if username = username -->
+		<!--{% if do_i_save %}-->
+			<!--{% if do_i_save %}-->
+			<!--
+			{% for item in items %}
+			<div class='col-sm-3'>
+				<div class="thumbnail">
+                    <img src="http://placehold.it/320x150" alt="">
+                    <div class="caption">
+                        <p class="pull-right">{{ item.user_company }}</p>
+                        <small><a href="{% url 'portfolio_detail' username=request.user slug=post.slug %}">{{ item.project_title }}</a>
+                        </small>
+                    
+                    	<br>
+                        <br>
+                        <br>
+                        <p class="pull-right">{{ item.end_date|timeuntil }} left</p>
+                        <p>
+                            <span class="pull-left">{{ item.job_type }}</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+			{% endfor %}
+			{{ hello }}
+			<h2>hello</h2>
+		-->
+			<!--{% endif %}-->
+		<!--{% else %}
+		<h3>Not Working!</h3>
+		{% endif %}-->
+
+	<hr>
+
+</div>
+<!-- /.container -->
+
+	
+
+{% endblock %}

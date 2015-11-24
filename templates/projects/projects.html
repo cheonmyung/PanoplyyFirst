@@ -1,0 +1,167 @@
+{% extends "base/basic.html" %}
+{% load staticfiles %}
+{% load bootstrap_pagination %}
+
+
+{% block title %}Let's try Projects - Panoplyy {% endblock %}
+
+{% block content %}
+
+<!-- Page Content -->
+    <div class="container">
+    
+        <!-- Page Header -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">Projects for Internships or Entry-Level Jobs
+                    <small>{{ now }}</small>
+                    <!--
+                    <span class="pull-right">
+                    <form action="/search/" class="navbar-form navbar-right" method="get">
+                    <div class="form-group">
+                    <input type="text" placeholder="Search" class="form-control" name="query"></input>
+                    </div>
+                    </form>
+                    </span>
+                -->
+                </h1>
+            </div>
+        </div>
+
+
+        <!-- User Panel -->
+
+        <!-- Projects Row -->
+        <div class="row">
+        {% for object in object_list %}
+            <div class="col-sm-4 col-lg-4 col-md-4">
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                            <span>
+                                {% if object.user_company.profile.picture %}
+                                <!--
+                                <a href="{% url 'profile_view' username=object.user_company %}"></a>-->
+                                <img src='{{ object.user_company.profile.picture.url }}' width='30px' height='30px' class='img-responsive' />
+                                
+                                {% else %}
+                                <a href="#">
+                                <img href="#" src='{% static "img/profile_default.png" %}' width='30px' height='30px' class='img-responsive' />
+                                </a>
+                                {% endif %}
+                            </span>
+                            <span>
+                                <h4>{{ object.position_name }}</h4>
+                            </span>                                      
+                    </div>
+
+                    <div class="panel-body">
+                        <p><a href="{% url 'detail' slug=object.slug %}">{{ object.project_title }}</a></p>
+                        <br>
+                        {% if object.job_type == 'Internship' %}
+                        <p><a class="btn btn-info" role="button">{{ object.job_type }}</a> <a href="#" class="btn btn-default" role="button">{{ object.date_end|timeuntil }} left</a></p>
+                        {% else %}
+                        <p><a class="btn btn-warning" role="button">{{ object.job_type }}</a> <a href="#" class="btn btn-default" role="button">{{ object.date_end|timeuntil }} left</a></p>
+                        {% endif %}
+                    </div>
+
+                </div>
+            </div>
+        {% endfor %}  
+        </div>
+
+
+
+        <!-- Projects Row -->
+        <!--
+        <div class="row">        
+        {% for object in object_list %}
+            <div class="col-sm-3 col-lg-3 col-md-3">
+                        <div class="thumbnail">
+                            <img src="http://placehold.it/320x150" alt="">
+                            <div>
+                            <h4 class="pull-right">{{ object.user_company }}</h4>
+                            <button type="button" class="btn btn-primary">{{ object.position_category}}</button>
+                            </div>
+                            <div class="caption">
+                                
+                                                                
+                                <p class="pull-right">
+                                    {% if object.user_company.profile.picture %}
+                                    <img src='{{ object.user_company.profile.picture.url }}' width='10px' height='10px' class='img-responsive'/>
+                                    {% else %}
+                                    <img src='{% static "img/profile_default.png" %}' width='10px' height='10px' class='img-responsive' />
+                                    {% endif %}
+                                </p>
+                               
+                                
+                                <br>
+                                <small><a href="{% url 'detail' slug=object.slug %}">{{ object.project_title }}</a>
+                                </small>
+                                <br>
+                                
+                                
+                                <p class="pull-right">{{ object.date_end|timeuntil }} left</p>
+                                <p class="pull-left"><button type="button" class="btn btn-default btn-sm">{{ object.job_type }}</button></p>
+
+                            </div>
+                           
+                                
+                                <button type="button" class="btn btn-default btn-xs pull-left">{{ object.job_type }}</button>                                                               
+                                <p>
+                                <button type="button" class="btn btn-primary pull-left">{{ object.position_category}}</button>
+                                <button class="btn btn-default pull-right" type="submit">{{ object.date_end|timeuntil }} left</button>
+                                </p>
+
+                                <p class="pull-right">{{ object.date_end|timeuntil }} left</p>
+                            
+                                
+                        </div>
+            </div>
+        {% endfor %}
+
+
+
+        </div>
+-->
+
+        <!-- /.row -->
+
+        
+        <hr>
+        <!--
+        <div class="row text-center">
+        {% bootstrap_paginate page_obj range=10 show_prev_next="false" show_first_last="true" %}
+        </div>
+        -->
+
+    </div>
+    <!-- /.container -->
+
+<!--
+{% for object in object_list %}
+            <div class="col-sm-3 col-lg-3 col-md-3">
+                        <div class="thumbnail">
+                            <img src="http://placehold.it/320x150" alt="">
+                            <div class="caption">
+                                <p class="pull-right">{{ object.user_company }}</p>
+                                <small><a href="{% url 'detail' slug=object.slug %}">{{ object.project_title }}</a>
+                                </small>
+                            
+                                <br>
+                                <br>
+                                <br>
+                                <p class="pull-right">{{ object.date_end|timeuntil }} left</p>
+                                <p>
+                                    <span class="pull-left">{{ object.job_type }}</span>
+                                </p>
+
+                            </div>
+                        </div>
+            </div>
+        {% endfor %}
+
+-->
+
+
+{% endblock %}
